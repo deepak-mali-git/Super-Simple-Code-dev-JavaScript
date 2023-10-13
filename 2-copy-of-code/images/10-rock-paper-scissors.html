@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <style>
+        body{
+            background-color: rgb(0, 0, 0);
+            color: white;
+        }
+        .bd{
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .one,.two{
+            font-size: 1.3rem;
+            font-weight: normal;
+        }
+        img{
+            /* background-color: transparent; */
+            height: 50px;
+        }
+        .buttonn{
+            margin-right: 1.3rem;
+            background-color: rgb(34, 44, 54,.8);
+            border: 3px solid rgb(255, 255, 255,.3);
+            padding: 2rem;
+            border-radius: 100px;
+
+        }
+        
+        
+        .main{
+            margin-top: 2rem;
+        }
+        .btn{
+            margin-top: 3rem;
+            padding: .5rem 1rem;
+            border: none;
+            font-size: 1.4rem;
+        }
+        .imgimgimg{
+            display: flex;
+            flex: row;
+            /* justify-content: center; */
+            align-items: center;
+            font-size: 1.5rem;
+        }
+        .imgimgimg img{
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+        
+        .greenbackground{
+            background-color: rgb(0, 25, 109);
+            border: 3px solid rgb(55, 68, 255);;
+            box-shadow: 0px 0px 100px rgb(0, 0, 255);
+            transition: all .3s ease-in-out;
+        }
+
+    </style>
+</head>
+<body>
+    <p class="bd">Rock Paper Scissors</p>
+
+    <div class="main">
+        
+    <button  class="buttonn three-btn1" onclick="pickComputerMover('rock');">
+        <img src="../images/rock-emoji.png" alt="" class="three-img1">
+        </button>
+    
+        <button class="buttonn three-btn2"  onclick="pickComputerMover('paper');">
+        <img src="../images/paper-emoji.png" alt="" class="three-img2">
+        </button>
+    
+        <button  class="buttonn three-btn3" onclick="pickComputerMover('scissors');">
+        <img src="../images/scissors-emoji.png" alt="" class="three-img3">
+        </button>
+    
+    </div>
+    <div>
+        <p class="one bd"></p>
+        <div class="imgimgimg"></div>
+        <p class="two"></p>
+    </div>
+
+    <button class="btn"
+    onclick=" score.win = 0; score.loss = 0; score.ties = 0;
+    updateScore();
+    localStorage.removeItem('score');
+    ">
+    Reset Score
+    </button>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+    <script>
+
+        let score = JSON.parse(localStorage.getItem('score'));
+
+        if(score === null){
+            score = {
+                win : 0,
+                loss : 0,
+                ties : 0
+            };   
+        }
+
+        function greenRed(one,two){
+            // alert(one);
+  
+            document.querySelector('.three-btn1').classList.remove('greenbackground');
+            document.querySelector('.three-btn2').classList.remove('greenbackground');
+            document.querySelector('.three-btn3').classList.remove('greenbackground');
+
+
+            if(one === "rock"){
+                document.querySelector('.three-btn1').classList.add('greenbackground');
+            }
+            else if(one === "paper"){
+                document.querySelector('.three-btn2').classList.add('greenbackground');
+
+            }
+            
+            else{
+                document.querySelector('.three-btn3').classList.add('greenbackground');
+
+            }
+
+
+        }
+
+        function pickComputerMover (user) {
+            const randomNumber =  Math.round(Math.random() * 2);
+
+            const arr = ['rock','paper','scissors'];
+            const computerMove = arr[randomNumber];
+
+
+            const userMove = user;
+            let result = "";
+
+            if(computerMove === 'rock') {
+                if(userMove === 'rock'){
+                    result = "match draw";
+                }
+                else if(userMove === 'paper'){
+                    result = "you win";
+                }
+                else {
+                    result = "you lose";
+                }
+            }
+            
+            if(computerMove === 'paper') {
+                if(userMove === 'rock'){
+                    result = "you lose";
+                }
+                else if(userMove === 'paper'){
+                    result = "match draw";
+                }
+                else {
+                    result = "you win";
+                }
+            }
+            
+           
+            
+            if(computerMove === 'scissors') {
+                if(userMove === 'rock'){
+                    result = "you win";
+                }
+                else if(userMove === 'paper'){
+                    result = "you lose";
+                }
+                else {
+                    result = "match draw";
+                }
+            }
+
+            if (result === "you win"){
+                score.win++;
+            }
+            else if(result === "you lose") {
+                score.loss++;
+            }
+            else if(result === "match draw"){
+                score.ties++;
+            }
+
+
+            
+            
+            localStorage.setItem('score',JSON.stringify(score));
+            
+            document.querySelector('.one').innerHTML = `${result}`;
+            
+            document.querySelector('.imgimgimg').innerHTML = `you <img src="../images/${userMove}-emoji.png" alt=""> computer <img src="../images/${computerMove}-emoji.png" alt="">`;
+            
+            updateScore();
+            greenRed(userMove,computerMove);
+
+
+        }
+
+        function updateScore(){
+            document.querySelector('.two').innerHTML = `win ${score.win} : loss ${score.loss} : ties : ${score.ties}`;
+
+            document.querySelector('.three-btn1').classList.remove('greenbackground');
+            document.querySelector('.three-btn2').classList.remove('greenbackground');
+            document.querySelector('.three-btn3').classList.remove('greenbackground');
+
+
+
+        }
+
+        
+    
+
+    </script>
+</body>
+</html>
